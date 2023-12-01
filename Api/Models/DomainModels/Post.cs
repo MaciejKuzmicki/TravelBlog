@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Api.Models.DomainModels
 {
@@ -9,7 +10,7 @@ namespace Api.Models.DomainModels
         public string Description { get; set; }
         public DateTime DateTime { get; set; }
 
-        public User Author { get; set; }
+        public Guid AuthorId { get; set; }
 
         public List<String> Images { get; set; }
         public ICollection<Comment> Comments { get; set; }

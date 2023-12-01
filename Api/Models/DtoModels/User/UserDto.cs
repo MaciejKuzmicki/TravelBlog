@@ -13,6 +13,6 @@ namespace Api.Models.DtoModels
 
         public ICollection<User> ObservedUsers { get; set; }
         public ICollection<Comment> Comments { get; set; }
-        public ICollection<Post> Posts { get; set; }
+        public ICollection<DomainModels.Post> Posts { get; set; }
     }
 }

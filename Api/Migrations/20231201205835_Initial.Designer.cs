@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(TravelDataContext))]
-    partial class TravelDataContextModelSnapshot : ModelSnapshot
+    [Migration("20231201205835_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,10 +54,6 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Models.DomainModels.Post", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AuthorId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("DateTime")
@@ -72,12 +71,7 @@ namespace Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Posts");
                 });
@@ -142,9 +136,13 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.Models.DomainModels.Post", b =>
                 {
-                    b.HasOne("Api.Models.DomainModels.User", null)
+                    b.HasOne("Api.Models.DomainModels.User", "Author")
                         .WithMany("Posts")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("Api.Models.DomainModels.User", b =>

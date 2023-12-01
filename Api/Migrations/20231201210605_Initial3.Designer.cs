@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(TravelDataContext))]
-    [Migration("20231129210533_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20231201210605_Initial3")]
+    partial class Initial3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,9 +75,12 @@ namespace Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Posts");
                 });
@@ -142,13 +145,9 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.Models.DomainModels.Post", b =>
                 {
-                    b.HasOne("Api.Models.DomainModels.User", "Author")
+                    b.HasOne("Api.Models.DomainModels.User", null)
                         .WithMany("Posts")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Author");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Api.Models.DomainModels.User", b =>

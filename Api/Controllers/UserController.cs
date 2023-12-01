@@ -1,5 +1,6 @@
 ﻿using Api.Models.DomainModels;
 using Api.Models.DtoModels;
+using Api.Models.DtoModels.Post;
 using Api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -57,16 +58,29 @@ namespace Api.Controllers
             return Ok(_userService.getAll());
         }
 
-        [HttpPost("/{PostId:int}/posts")]
-        public async Task<IActionResult> addPost(int PostId)
-        {
+        
 
+        [HttpPost("{UserId:Guid}/posts")]
+        public async Task<IActionResult> addPost(Guid UserId, CreatePostDto newPost)
+        {
+            var post = new Post
+            {
+                Title = newPost.Title,
+                Description = newPost.Description,
+                Images = newPost.Images,
+                Comments = new List<Comment>(),
+                DateTime = DateTime.UtcNow,
+                AuthorId = UserId
+            };
+
+            await _userService.createPost(post);
+            return Ok(post);
         }
 
-        [HttpPost("/{PostId:int}/posts/{CommentId:int}/comments")]
-        public async Task<IActionResult> addComment(int PostId, int CommentId)
+        [HttpPost("{UserId:int}/posts/{PostId:int}/comments")]
+        public async Task<IActionResult> addComment(int PostId, int UserId)
         {
-
+            return Ok();
         }
 
     }

@@ -1,6 +1,8 @@
 ﻿using Api.Models;
 using Api.Models.DomainModels;
 using Api.Models.DtoModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services
 {
@@ -26,7 +28,22 @@ namespace Api.Services
         }
         public async Task<List<User>> getAll()
         {
-            return _context.Users.ToList();
+            return _context.Users.Include(b=>b.Posts).ToList();
         }
+
+        public async Task<Post> createPost(Post post)
+        {
+            await _context.Posts.AddAsync(post);
+            var user = _context.Users.Include(b=>b.Posts).FirstOrDefault(x=> x.Id == post.AuthorId);
+            user.Posts.Add(post);
+            await _context.SaveChangesAsync();
+            return post;
+        }
+
+        public async Task<User> getUserById(Guid id)
+        {
+            return _context.Users.Include(b=>b.Posts).FirstOrDefault(x => x.Id == id);
+        }
+
     }
 }

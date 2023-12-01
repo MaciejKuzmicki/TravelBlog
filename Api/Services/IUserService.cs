@@ -8,5 +8,7 @@ namespace Api.Services
         Task<User> Register(User user);
         Task<User> Login(User user);
         Task<List<User>> getAll();
+        Task<Post> createPost(Post post);
+        Task<User> getUserById(Guid id);
     }
 }

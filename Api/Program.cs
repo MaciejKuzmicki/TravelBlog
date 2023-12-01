@@ -1,6 +1,7 @@
 using Api.Models;
 using Api.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddDbContext<TravelDataContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("TravelBlogDB"))
     );
 builder.Services.AddScoped<IUserService, UserService>();
+
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

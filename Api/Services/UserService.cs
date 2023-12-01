@@ -20,7 +20,7 @@ namespace Api.Services
             throw new NotImplementedException();
         }
 
-        public async Task<User> Register(User user)
+        public async Task<User> register(User user)
         {
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
@@ -45,5 +45,9 @@ namespace Api.Services
             return _context.Users.Include(b=>b.Posts).FirstOrDefault(x => x.Id == id);
         }
 
+        public Task<Comment> createComment(Comment comment)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

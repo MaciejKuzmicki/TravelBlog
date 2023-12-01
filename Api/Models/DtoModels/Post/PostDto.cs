@@ -1,11 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Api.Models.DomainModels;
 
-namespace Api.Models.DomainModels
+namespace Api.Models.DtoModels.Post
 {
-    public class Post
+    public class PostDto
     {
-        [Key]
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -14,6 +12,6 @@ namespace Api.Models.DomainModels
         public Guid AuthorId { get; set; }
 
         public List<String> Images { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+        public ICollection<DomainModels.Comment> Comments { get; set; }
     }
 }

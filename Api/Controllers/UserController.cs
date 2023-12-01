@@ -1,5 +1,6 @@
 ﻿using Api.Models.DomainModels;
 using Api.Models.DtoModels;
+using Api.Models.DtoModels.Comment;
 using Api.Models.DtoModels.Post;
 using Api.Services;
 using Microsoft.AspNetCore.Http;
@@ -33,7 +34,7 @@ namespace Api.Controllers
                 Image = userDto.Image
             };
 
-            await _userService.Register(user);
+            await _userService.register(user);
 
             var result = new UserDto
             {
@@ -74,13 +75,38 @@ namespace Api.Controllers
             };
 
             await _userService.createPost(post);
-            return Ok(post);
+
+            var result = new PostDto
+            {
+                Id = post.Id,
+                Title = post.Title,
+                Description = post.Description,
+                Comments = post.Comments,
+                DateTime = post.DateTime,
+                AuthorId = post.AuthorId,
+                Images = post.Images
+            };
+            return Ok(result);
         }
 
         [HttpPost("{UserId:int}/posts/{PostId:int}/comments")]
-        public async Task<IActionResult> addComment(int PostId, int UserId)
+        public async Task<IActionResult> addComment(Guid PostId, Guid UserId, CreateCommentDto newComment)
         {
-            return Ok();
+            var comment = new Comment
+            {
+                Description = newComment.Description,
+                AuthorId = UserId,
+                PostId = PostId
+            };
+            await _userService.createComment(comment);
+            var result = new CommentDto
+            {
+                Id = comment.Id,
+                AuthorId = comment.AuthorId,
+                PostId = comment.PostId,
+                Description = comment.Description
+            };
+            return Ok(result);
         }
 
     }

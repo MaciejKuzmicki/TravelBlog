@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Api.Models.DomainModels
+﻿namespace Api.Models.DtoModels.Comment
 {
-    public class Comment
+    public class CommentDto
     {
-        [Key]
         public Guid Id { get; set; }
         public string Description { get; set; }
 

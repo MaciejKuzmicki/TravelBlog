@@ -11,6 +11,8 @@ namespace Api.Models.DomainModels
         public string Description { get; set; }
         public DateTime DateTime { get; set; }
 
+        [ForeignKey("AuthorId")]
+        public User Author { get; set; }
         public Guid AuthorId { get; set; }
 
         public List<String> Images { get; set; }

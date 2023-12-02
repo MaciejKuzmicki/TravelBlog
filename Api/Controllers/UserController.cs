@@ -34,7 +34,7 @@ namespace Api.Controllers
                 Image = userDto.Image
             };
 
-            await _userService.register(user);
+            await _userService.Register(user);
 
             var result = new UserDto
             {
@@ -56,7 +56,13 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> getAllUsers()
         {
-            return Ok(_userService.getAll());
+            return Ok(_userService.GetAll());
+        }
+
+        [HttpGet("{UserId:Guid}")]
+        public async Task<IActionResult> getUserById(Guid UserId)
+        {
+            return Ok(_userService.GetUserById(UserId));
         }
 
         
@@ -70,11 +76,10 @@ namespace Api.Controllers
                 Description = newPost.Description,
                 Images = newPost.Images,
                 Comments = new List<Comment>(),
-                DateTime = DateTime.UtcNow,
-                AuthorId = UserId
+                DateTime = DateTime.UtcNow
             };
 
-            await _userService.createPost(post);
+            await _userService.CreatePost(post, UserId);
 
             var result = new PostDto
             {
@@ -95,10 +100,8 @@ namespace Api.Controllers
             var comment = new Comment
             {
                 Description = newComment.Description,
-                AuthorId = UserId,
-                PostId = PostId
             };
-            await _userService.createComment(comment);
+            await _userService.CreateComment(comment, UserId, PostId);
             var result = new CommentDto
             {
                 Id = comment.Id,

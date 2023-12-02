@@ -10,6 +10,7 @@ builder.Services.AddDbContext<TravelDataContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("TravelBlogDB"))
     );
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPostService, PostService>();
 
 
 builder.Services.AddControllers();

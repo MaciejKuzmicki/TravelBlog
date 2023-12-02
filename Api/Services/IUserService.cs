@@ -5,11 +5,12 @@ namespace Api.Services
 {
     public interface IUserService
     {
-        Task<User> register(User user);
+        Task<User> Register(User user);
         Task<User> Login(User user);
-        Task<List<User>> getAll();
-        Task<Post> createPost(Post post);
-        Task<User> getUserById(Guid id);
-        Task<Comment> createComment(Comment comment);
+        Task<List<User>> GetAll();
+        Task<Post> CreatePost(Post post, Guid UserId);
+        Task<User> GetUserById(Guid id);
+        Task<Comment> CreateComment(Comment comment, Guid UserId, Guid PostId);
+        Task<List<Comment>> GetComments();
     }
 }

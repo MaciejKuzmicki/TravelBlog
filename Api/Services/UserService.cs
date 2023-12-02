@@ -20,34 +20,47 @@ namespace Api.Services
             throw new NotImplementedException();
         }
 
-        public async Task<User> register(User user)
+        public async Task<User> Register(User user)
         {
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
             return user;
         }
-        public async Task<List<User>> getAll()
+        public async Task<List<User>> GetAll()
         {
             return _context.Users.Include(b=>b.Posts).ToList();
         }
 
-        public async Task<Post> createPost(Post post)
+        public async Task<Post> CreatePost(Post post, Guid UserId)
         {
+            var user = await _context.Users.FindAsync(UserId);
+            post.Author = user;
+            post.AuthorId = UserId; 
+           //user.Posts.Add(post); NAPRAWIC
             await _context.Posts.AddAsync(post);
-            var user = _context.Users.Include(b=>b.Posts).FirstOrDefault(x=> x.Id == post.AuthorId);
-            user.Posts.Add(post);
             await _context.SaveChangesAsync();
             return post;
         }
 
-        public async Task<User> getUserById(Guid id)
+        public async Task<User> GetUserById(Guid id)
         {
-            return _context.Users.Include(b=>b.Posts).FirstOrDefault(x => x.Id == id);
+            return _context.Users.FirstOrDefault(x => x.Id == id);
         }
 
-        public Task<Comment> createComment(Comment comment)
+        public async Task<Comment> CreateComment(Comment comment, Guid UserId, Guid PostId)
         {
-            throw new NotImplementedException();
+            var user = _context.Users.FirstOrDefault(x => x.Id == UserId);
+            var post = _context.Posts.FirstOrDefault(x => x.Id == PostId);
+            user.Comments.Add(comment);
+            post.Comments.Add(comment);
+            await _context.Comments.AddAsync(comment);
+            await _context.SaveChangesAsync();
+            return comment;
+        }
+
+        public async Task<List<Comment>> GetComments()
+        {
+            return _context.Comments.ToList();
         }
     }
 }

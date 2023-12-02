@@ -1,4 +1,6 @@
-﻿namespace Api.Models.DtoModels.Comment
+﻿using Api.Models.DomainModels;
+
+namespace Api.Models.DtoModels.Comment
 {
     public class CommentDto
     {

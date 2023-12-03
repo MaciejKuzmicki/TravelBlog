@@ -33,10 +33,10 @@ namespace Api.Services
 
         public async Task<Post> CreatePost(Post post, Guid UserId)
         {
-            var user = await _context.Users.FindAsync(UserId);
+            var user = _context.Users.Include(b=>b.Posts).FirstOrDefault(x=>x.Id == UserId);
             post.Author = user;
             post.AuthorId = UserId; 
-           //user.Posts.Add(post); NAPRAWIC
+            user.Posts.Add(post);
             await _context.Posts.AddAsync(post);
             await _context.SaveChangesAsync();
             return post;
@@ -49,8 +49,8 @@ namespace Api.Services
 
         public async Task<Comment> CreateComment(Comment comment, Guid UserId, Guid PostId)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Id == UserId);
-            var post = _context.Posts.FirstOrDefault(x => x.Id == PostId);
+            var user = _context.Users.Include(b=>b.Comments).FirstOrDefault(x => x.Id == UserId);
+            var post = _context.Posts.Include(b=>b.Comments).FirstOrDefault(x => x.Id == PostId);
             user.Comments.Add(comment);
             post.Comments.Add(comment);
             await _context.Comments.AddAsync(comment);

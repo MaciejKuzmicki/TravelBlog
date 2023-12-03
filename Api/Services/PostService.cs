@@ -23,7 +23,7 @@ namespace Api.Services
 
         public async Task<Post> GetPostById(Guid id)
         {
-            var post = _context.Posts.Include(x=>x.Comments).FirstOrDefault(x=>x.Id == id);
+            var post = _context.Posts.Include(x=>x.Author).Include(x=>x.Comments).FirstOrDefault(x=>x.Id == id);
             return post;
         }
 

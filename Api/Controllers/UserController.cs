@@ -94,7 +94,7 @@ namespace Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("{UserId:int}/posts/{PostId:int}/comments")]
+        [HttpPost("{UserId:Guid}/posts/{PostId:Guid}/comments")]
         public async Task<IActionResult> addComment(Guid PostId, Guid UserId, CreateCommentDto newComment)
         {
             var comment = new Comment

@@ -30,6 +30,7 @@ namespace Api.Controllers
         [HttpDelete("{PostId:Guid}")]
         public async Task<IActionResult> deletePost(Guid PostId)
         {
+            await _postService.DeletePost(PostId);
             return Ok();
         }
     } 

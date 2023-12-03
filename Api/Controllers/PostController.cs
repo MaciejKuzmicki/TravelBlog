@@ -31,7 +31,7 @@ namespace Api.Controllers
         public async Task<IActionResult> deletePost(Guid PostId)
         {
             await _postService.DeletePost(PostId);
-            return Ok();
+            return NoContent();
         }
     } 
 }

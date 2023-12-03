@@ -49,7 +49,7 @@ namespace Api.Controllers
                 Image = user.Image
             };
 
-            return Ok(result);
+            return Created("Created", result);
 
         }
 
@@ -91,7 +91,7 @@ namespace Api.Controllers
                 AuthorId = post.AuthorId,
                 Images = post.Images
             };
-            return Ok(result);
+            return Created("Created", result);
         }
 
         [HttpPost("{UserId:Guid}/posts/{PostId:Guid}/comments")]
@@ -109,7 +109,7 @@ namespace Api.Controllers
                 PostId = comment.PostId,
                 Description = comment.Description
             };
-            return Ok(result);
+            return Created("Created", result);
         }
 
     }

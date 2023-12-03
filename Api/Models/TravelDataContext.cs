@@ -1,9 +1,10 @@
 ﻿using Api.Models.DomainModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Models
 {
-    public class TravelDataContext : DbContext
+    public class TravelDataContext : IdentityDbContext
     {
         public TravelDataContext(DbContextOptions<TravelDataContext> options): base(options) { }
 

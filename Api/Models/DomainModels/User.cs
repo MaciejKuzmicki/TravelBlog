@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Api.Models.DomainModels
 {
-    public class User
+    public class User : IdentityUser
     {
         [Key]
         public Guid Id { get; set; }

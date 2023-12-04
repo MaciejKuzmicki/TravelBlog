@@ -10,6 +10,7 @@ namespace Api.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Post>()
         .HasOne(p => p.Author)
         .WithMany(u => u.Posts)

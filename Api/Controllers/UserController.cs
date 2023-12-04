@@ -2,8 +2,11 @@
 using Api.Models.DtoModels;
 using Api.Models.DtoModels.Comment;
 using Api.Models.DtoModels.Post;
+using Api.Models.DtoModels.User;
 using Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -13,29 +16,41 @@ namespace Api.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService) 
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> login([FromBody] UserLoginDto userDto)
+        {
+            var response = await _userService.Login(userDto.Email, userDto.Password);
+            if (response == null)
+            {
+                return BadRequest();
+            }
+            
+            return Ok(response.Token);
+        }
+
         [HttpPost("register")]
-        public async Task<IActionResult> register(UserRegisterDto userDto)
+        public async Task<IActionResult> register([FromBody] UserRegisterDto userDto)
         {
             var user = new User
             {
                 Name = userDto.Name,
                 Surname = userDto.Surname,
                 Email = userDto.Email,
-                HashedPassword = userDto.Password,
                 RegistrationDate = DateTime.UtcNow,
                 Comments = new List<Comment>(),
                 ObservedUsers = new List<User>(),
                 Posts = new List<Post>(),
-                Image = userDto.Image
+                Image = userDto.Image,
+                Token = ""
             };
-
-            await _userService.Register(user);
-
+            await _userService.Register(user, userDto.Password);
+            
+            
             var result = new UserDto
             {
                 Id = user.Id,
@@ -54,6 +69,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> getAllUsers()
         {
             return Ok(_userService.GetAll());

@@ -10,8 +10,9 @@ namespace Api.Models.DtoModels
         public string Email { get; set; }
         public DateTime RegistrationDate { get; set; }
         public string Image { get; set; }
+        public string Token { get; set; }
 
-        public ICollection<User> ObservedUsers { get; set; }
+        public ICollection<DomainModels.User> ObservedUsers { get; set; }
         public ICollection<DomainModels.Comment> Comments { get; set; }
         public ICollection<DomainModels.Post> Posts { get; set; }
     }

@@ -1,8 +1,13 @@
 ﻿using Api.Models;
 using Api.Models.DomainModels;
 using Api.Models.DtoModels;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Api.Services
 {
@@ -15,13 +20,54 @@ namespace Api.Services
             _context = context;
         }
 
-        public Task<User> Login(User user)
+        public async Task<User> Login(string email, string password)
         {
-            throw new NotImplementedException();
+            var user = _context.Users.FirstOrDefault(x=>x.Email == email);
+            if(user == null)
+            {
+                return null;
+            }
+            else
+            {
+                var passwordHasher = new PasswordHasher<User>();
+                var result = passwordHasher.VerifyHashedPassword(new User(), user.HashedPassword, password);
+                if (result == PasswordVerificationResult.Success || result == PasswordVerificationResult.SuccessRehashNeeded)
+                {
+                    user.Token = CreateToken(user);
+                    return user;
+                }
+                else return null;
+            }
         }
 
-        public async Task<User> Register(User user)
+        private string CreateToken(User user)
         {
+            List<Claim> claims = new List<Claim>()
+             {
+                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                 new Claim(ClaimTypes.Name, user.Name),
+                 new Claim(ClaimTypes.Email, user.Email),
+                 new Claim(ClaimTypes.Surname, user.Surname)
+             };
+
+            SymmetricSecurityKey key =
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ReplaceThisWithYourStableKey1234567890ReplaceThisWithYourStableKey"));
+            SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var token = new JwtSecurityToken(
+                               claims: claims,
+                               expires: DateTime.Now.AddDays(1),
+                               signingCredentials: creds
+                  );
+
+            var tokenHandler = new JwtSecurityTokenHandler().WriteToken(token);
+            return tokenHandler;
+        }
+
+        public async Task<User> Register(User user, string password)
+        {
+            var passwordHasher = new PasswordHasher<User>();
+            user.HashedPassword = passwordHasher.HashPassword(new User(), password);
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
             return user;

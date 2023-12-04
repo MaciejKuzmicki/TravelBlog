@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Api.Models.DomainModels
 {
-    public class User : IdentityUser
+    public class User 
     {
         [Key]
         public Guid Id { get; set; }
@@ -13,6 +14,7 @@ namespace Api.Models.DomainModels
         public string Email { get; set; }
         public DateTime RegistrationDate { get; set; }
         public string Image {  get; set; }
+        public string Token { get; set; }
 
         public ICollection<User> ObservedUsers { get; set; }
         public ICollection<Comment> Comments { get; set; }

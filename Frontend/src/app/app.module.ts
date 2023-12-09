@@ -6,8 +6,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CreatePostComponent } from './components/post/create-post/create-post/create-post.component';
 import { AppRoutingModule } from './app-routing.module';
-import {RouterLink} from "@angular/router";
-import {FormsModule} from "@angular/forms";
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -19,7 +18,6 @@ import {FormsModule} from "@angular/forms";
     BrowserModule,
     NgbModule,
     AppRoutingModule,
-    RouterLink,
     FormsModule
   ],
   providers: [],

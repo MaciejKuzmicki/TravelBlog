@@ -1,10 +1,14 @@
 <div class="card mx-auto text-center" style="padding:20px; border-radius:20px;max-width:500px; align-content:center; margin:auto">
   <h5 class=" display-5 fw-bold text-body-emphasis rounded text-center  p-3">Add new Post</h5>
 
-  <form #form="ngForm" enctype="multipart/form-data">
+  <form #form="ngForm" enctype="multipart/form-data" (ngSubmit)="onFormSubmit()">
 
-    <input class="form-control" style="border-radius:20px" placeholder="Enter the title" [(ngModel)] = "" />
+    <input class="form-control" type="text" id="Title" name="Title" style="border-radius:20px" placeholder="Enter the title" [(ngModel)]="model.Title" />
     <br />
+
+    <textarea class="form-control" type="text" id="Description" name="Description" style="border-radius:20px" placeholder="Share some info about your trip..." [(ngModel)]="model.Description" ></textarea>
+    <br />
+
     <div class="row mb-3">
       <div class="col d-grid">
         <button type="submit" class="btn btn-outline-primary" style="border-radius:20px" href="/">Add Post</button>
